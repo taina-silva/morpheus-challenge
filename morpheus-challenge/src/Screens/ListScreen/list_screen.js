@@ -1,0 +1,82 @@
+import React, {useState, useEffect, useCallback} from 'react';
+import { Link } from "react-router-dom";
+import SearchBar from "material-ui-search-bar";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+
+function ListScreen() {
+    const [ originalUsers, setOriginalUsers ] = useState([]);
+    const [ users, setUsers ] = useState([]);
+    const [ filter, setFilter ] = useState("");
+
+    const requestSearch = (filter_value) => {
+        if(filter_value === "") setUsers(originalUsers);
+        else {
+            const filtered_rows = users.filter((row) => {
+                return row.username.toLowerCase().includes(filter_value.toLowerCase());
+            });
+            setUsers(filtered_rows);
+        }
+    };
+
+    const cancelSearch = () => {
+        setFilter("");
+        requestSearch(filter)
+    };
+
+    const get_all_users = useCallback(() => {
+        fetch('http://localhost:3001')
+        .then(response => {
+            return response.text();
+        })
+        .then(data => {
+            setUsers(JSON.parse(data));
+            setOriginalUsers(JSON.parse(data));
+        });
+    }, []);
+
+    useEffect(() => {
+        get_all_users();
+    }, [get_all_users]);
+
+    return (
+        <div>
+            <SearchBar
+                value={filter}
+                onChange={(filter_value) => requestSearch(filter_value)}
+                onCancelSearch={() => cancelSearch()}
+            />
+            <TableContainer>
+            <Table>
+                <TableHead>
+                <TableRow>
+                    <TableCell>USUÁRIO</TableCell>
+                    <TableCell align="right">EMAIL</TableCell>
+                    <TableCell align="right">SENHA</TableCell>
+                    <TableCell align="right">NOME COMPLETO</TableCell>
+                    <TableCell align="right">CRIADO EM</TableCell>
+                </TableRow>
+                </TableHead>
+                <TableBody>
+                {users.map((row) => (
+                    <TableRow key={row.id}>
+                        <TableCell component="th" scope="row">{row.username}</TableCell>
+                        <TableCell align="right">{row.email}</TableCell>
+                        <TableCell align="right">{row.password}</TableCell>
+                        <TableCell align="right">{row.full_name}</TableCell>
+                        <TableCell align="right">{row.created_at.split('T')[0]} às {(row.created_at.split('T')[1]).split('.')[0]}</TableCell>
+                    </TableRow>
+                ))}
+                </TableBody>
+            </Table>
+            </TableContainer>
+            <Link to="/registration">CADASTRAR NOVO USUÁRIO</Link>
+        </div>
+    );
+}
+
+export default ListScreen;
