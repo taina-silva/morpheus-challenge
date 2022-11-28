@@ -15,25 +15,26 @@ const get_all_users = () => {
         db_pool.query(queryText, (error, results) => {
         if (error) {
           reject(error)
+        } else {
+          resolve(results.rows);
         }
-        resolve(results.rows);
       })
     }) 
 }
 
 const add_user = (body) => {
-    const { user_email, username, user_password, user_fullname } = body;
+    const { email, username, password, fullName } = body;
     return new Promise(function(resolve, reject) {
         const query = `INSERT INTO morpheus.users (email, username, password, full_name)
-                        values (${user_email}, ${username}, ${user_password}, ${user_fullname});`;
+                        values ($1, $2, $3, $4);`;
         
-        db_pool.query(query, (error, results) => {
+        db_pool.query(query, [email, username, password, fullName], (error, results) => {
         if (error) {
+          reject(error);
           console.log(error);
-          reject(error)
+        } else {
+          resolve(results.rows);
         }
-        console.log(results);
-        // resolve(results.rows);
       })
     }) 
 }

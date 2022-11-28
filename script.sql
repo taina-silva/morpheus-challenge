@@ -26,7 +26,7 @@ ALTER TABLE users OWNER TO postgres;
 
 CREATE OR REPLACE FUNCTION add_user(
     user_email users.email%TYPE,
-	username users.username%TYPE,
+    username users.username%TYPE,
     user_password users.password%TYPE,
     user_full_name users.full_name%TYPE
 )
@@ -34,9 +34,14 @@ RETURNS void AS
 $$
 BEGIN
     insert into users (id, email, username, password, full_name, created_at)
-		values ("user_email", "username", "user_password", "user_full_name", CURRENT_TIMESTAMP);
+        values ("user_email", "username", "user_password", "user_full_name");
 END;
 $$ language 'plpgsql';
 
-select add_user('teste@g.com', 'testee', '123123', 'JOSE');
+insert into users (email, username, password, full_name)
+        values ('teste@g.com', 'testee', '123123', 'JOSE');
+insert into users (email, username, password, full_name)
+        values ('kk@g.com', 'kk', '123123', 'asd');     
+
+-- select add_user('teste@g.com', 'testee', '123123', 'JOSE');
 select * from users;

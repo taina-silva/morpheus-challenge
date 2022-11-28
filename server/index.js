@@ -26,6 +26,13 @@ app.get('/', (req, res) => {
 app.post('/users', (req, res) => {
     users_manager.add_user(req.body)
     .then(response => {
+        response = {
+            statusCode: 200,
+            headers: {
+                'Content-Type': 'text/html; charset=utf-8',
+            },
+            body: "Successfully added user",
+        };
         res.status(200).send(response);
     })
     .catch(error => {

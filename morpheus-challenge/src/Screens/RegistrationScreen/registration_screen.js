@@ -1,13 +1,18 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Button from '@material-ui/core/Button';
 import Input from "@material-ui/core/Input";
+import Modal from "@material-ui/core/Modal";
 import {
-    Column
+    Column,
+    ModalBox,
+    ModalDescription
 } from './styles';
 
 function RegistrationScreen() {
+    const [ openModal, setOpenModal ] = useState(false);
+    const [ requestResponse, setRequestResponse ] = useState();
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -23,20 +28,40 @@ function RegistrationScreen() {
         }),
         onSubmit: function (values) {
             fetch('http://localhost:3001/users', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(values),
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(values),
             })
             .then(response => {
                 return response.text();
             })
             .then(data => {
-                alert(data);
+                setRequestResponse(data);
+                handleOpen();
             });
         }
     })
+
+    const handleOpen = () => {
+        setOpenModal(true);
+    };
+    
+    const handleClose = () => {
+        setOpenModal(false);
+    };
+
+    function get_modal_description() {
+        if(requestResponse !== undefined ) {
+            const res = JSON.parse(requestResponse);
+            if(res.statusCode === 200) return "Usuário cadastrado com sucesso";
+            else if(res.detail.includes("already exists")) {
+                if (res.detail.includes("email")) return "Email já está em uso. Por favor insira outro";
+                else if (res.detail.includes("username")) return "Nome de usuário já está em uso. Por favor insira outro";
+            }
+        } 
+    }
 
     return (
         <>
@@ -99,6 +124,19 @@ function RegistrationScreen() {
 
                 <Button type='submit'>CADASTRAR</Button>
             </form>
+            <Modal
+                open={openModal}
+                onClose={handleClose}
+                aria-labelledby="parent-modal-title"
+                aria-describedby="parent-modal-description"
+            >
+                <ModalBox>
+                    <h2 id="parent-modal-title">ALERTA</h2>
+                    <ModalDescription id="parent-modal-description">
+                        {get_modal_description()}
+                    </ModalDescription>
+                </ModalBox>
+            </Modal>
         </>
     );
 }
