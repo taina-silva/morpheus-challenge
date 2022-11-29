@@ -1,4 +1,3 @@
-import './App.css';
 import React from "react";
 import RegistrationScreen from './Screens/RegistrationScreen/registration_screen';
 import {

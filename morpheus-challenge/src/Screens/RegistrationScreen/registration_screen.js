@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import Button from '@material-ui/core/Button';
-import Input from "@material-ui/core/Input";
 import Modal from "@material-ui/core/Modal";
 import {
     Column,
     ModalBox,
-    ModalDescription
+    ModalDescription,
+    FormInput,
+    ErrorSpan,
+    Container,
+    FormBox,
+    FormButton
 } from './styles';
 
 function RegistrationScreen() {
@@ -64,66 +67,68 @@ function RegistrationScreen() {
     }
 
     return (
-        <>
-            <form onSubmit={formik.handleSubmit}>
-                <Column>
-                    <label>Email</label>
-                    <Input
-                        type="email" name="email" id="email"
-                        placeholder='Email'
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.email}
-                    />
-                    {formik.touched.email && formik.errors.email && (
-                        <span>{formik.errors.email}</span>
-                    )}
-                </Column>
+        <Container>
+            <FormBox>
+                <form onSubmit={formik.handleSubmit}>
+                    <Column>
+                        <label>Email</label>
+                        <FormInput
+                            type="email" name="email" id="email"
+                            placeholder='Email'
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            value={formik.values.email}
+                        />
+                        {formik.touched.email && formik.errors.email && (
+                            <ErrorSpan>{formik.errors.email}</ErrorSpan>
+                        )}
+                    </Column>
 
-                <Column>
-                    <label>Nome de usuário</label>
-                    <Input
-                        type="text" name="username" id="username"
-                        placeholder='Usuário'
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.username}
-                    />
-                     {formik.touched.username && formik.errors.username && (
-                        <span>{formik.errors.username}</span>
-                    )}
-                </Column>
-                
-                <Column>
-                    <label>Senha</label>
-                    <Input
-                        type="text" name="password" id="password"
-                        placeholder='Senha'
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.password}
-                    />
-                     {formik.touched.password && formik.errors.password && (
-                        <span>{formik.errors.password}</span>
-                    )}
-                </Column>
-                
-                <Column>
-                    <label>Nome Completo</label>
-                    <Input
-                        type="text" name="fullName" id="fullName"
-                        placeholder='Nome Completo'
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.fullName}
-                    />
-                     {formik.touched.fullName && formik.errors.fullName && (
-                        <span>{formik.errors.fullName}</span>
-                    )}
-                </Column>
+                    <Column>
+                        <label>Nome de usuário</label>
+                        <FormInput
+                            type="text" name="username" id="username"
+                            placeholder='Usuário'
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            value={formik.values.username}
+                        />
+                        {formik.touched.username && formik.errors.username && (
+                            <ErrorSpan>{formik.errors.username}</ErrorSpan>
+                        )}
+                    </Column>
+                    
+                    <Column>
+                        <label>Senha</label>
+                        <FormInput
+                            type="text" name="password" id="password"
+                            placeholder='Senha'
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            value={formik.values.password}
+                        />
+                        {formik.touched.password && formik.errors.password && (
+                            <ErrorSpan>{formik.errors.password}</ErrorSpan>
+                        )}
+                    </Column>
+                    
+                    <Column>
+                        <label>Nome Completo</label>
+                        <FormInput
+                            type="text" name="fullName" id="fullName"
+                            placeholder='Nome Completo'
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            value={formik.values.fullName}
+                        />
+                        {formik.touched.fullName && formik.errors.fullName && (
+                            <ErrorSpan>{formik.errors.fullName}</ErrorSpan>
+                        )}
+                    </Column>
 
-                <Button type='submit'>CADASTRAR</Button>
-            </form>
+                    <FormButton type='submit'>CADASTRAR</FormButton>
+                </form>
+            </FormBox>            
             <Modal
                 open={openModal}
                 onClose={handleClose}
@@ -137,7 +142,7 @@ function RegistrationScreen() {
                     </ModalDescription>
                 </ModalBox>
             </Modal>
-        </>
+        </Container>
     );
 }
 
