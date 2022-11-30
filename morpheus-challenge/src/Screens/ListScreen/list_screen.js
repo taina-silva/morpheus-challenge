@@ -10,7 +10,8 @@ import {
     Container,
     Row,
     NavLink,
-    StyledSearchBar
+    StyledSearchBar,
+    NoUsersInfo
 } from './styles';
 
 function ListScreen() {
@@ -18,7 +19,7 @@ function ListScreen() {
     const [ users, setUsers ] = useState([]);
     const [ filter, setFilter ] = useState("");
 
-    const requestSearch = (filter_value) => {
+    const do_search = (filter_value) => {
         if(filter_value === "") setUsers(originalUsers);
         else {
             const filtered_rows = users.filter((row) => {
@@ -28,9 +29,9 @@ function ListScreen() {
         }
     };
 
-    const cancelSearch = () => {
+    const cancel_search = () => {
         setFilter("");
-        requestSearch(filter)
+        do_search(filter)
     };
 
     const get_all_users = useCallback(() => {
@@ -39,8 +40,14 @@ function ListScreen() {
             return response.text();
         })
         .then(data => {
-            setUsers(JSON.parse(data));
-            setOriginalUsers(JSON.parse(data));
+            if(data.error) {
+                console.log(data.error);
+                setUsers([]);
+                setOriginalUsers([]);
+            } else {
+                setUsers(JSON.parse(data));
+                setOriginalUsers(JSON.parse(data));
+            }
         });
     }, []);
 
@@ -53,35 +60,41 @@ function ListScreen() {
             <Row>
                 <StyledSearchBar
                     value={filter}
-                    onChange={(filter_value) => requestSearch(filter_value)}
-                    onCancelSearch={() => cancelSearch()}
+                    onChange={(filter_value) => do_search(filter_value)}
+                    onCancelSearch={() => cancel_search()}
                 />
                 <NavLink to="/registration">CADASTRAR NOVO USUÁRIO</NavLink>
             </Row>
-            <TableContainer>
-            <Table>
-                <TableHead>
-                <TableRow>
-                    <TableCell>USUÁRIO</TableCell>
-                    <TableCell align="right">EMAIL</TableCell>
-                    <TableCell align="right">SENHA</TableCell>
-                    <TableCell align="right">NOME COMPLETO</TableCell>
-                    <TableCell align="right">CRIADO EM</TableCell>
-                </TableRow>
-                </TableHead>
-                <TableBody>
-                {users.map((row) => (
-                    <TableRow key={row.id}>
-                        <TableCell component="th" scope="row">{row.username}</TableCell>
-                        <TableCell align="right">{row.email}</TableCell>
-                        <TableCell align="right">{row.password}</TableCell>
-                        <TableCell align="right">{row.full_name}</TableCell>
-                        <TableCell align="right">{row.created_at.split('T')[0]} às {(row.created_at.split('T')[1]).split('.')[0]}</TableCell>
-                    </TableRow>
-                ))}
-                </TableBody>
-            </Table>
-            </TableContainer>
+            {users.length === 0 ? (
+                <NoUsersInfo>SEM USUÁRIOS CADASTRADOS</NoUsersInfo>
+            ) : (
+                <>
+                    <TableContainer>
+                        <Table>
+                            <TableHead>
+                            <TableRow>
+                                <TableCell>USUÁRIO</TableCell>
+                                <TableCell align="right">EMAIL</TableCell>
+                                {/* <TableCell align="right">SENHA</TableCell> */}
+                                <TableCell align="right">NOME COMPLETO</TableCell>
+                                <TableCell align="right">CRIADO EM</TableCell>
+                            </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {users.map((row) => (
+                                    <TableRow key={row.id}>
+                                        <TableCell component="th" scope="row">{row.username}</TableCell>
+                                        <TableCell align="right">{row.email}</TableCell>
+                                        {/* <TableCell align="right">{row.password}</TableCell> */}
+                                        <TableCell align="right">{row.full_name}</TableCell>
+                                        <TableCell align="right">{row.created_at.split('T')[0]} às {(row.created_at.split('T')[1]).split('.')[0]}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </>
+            )}
         </Container>
     );
 }

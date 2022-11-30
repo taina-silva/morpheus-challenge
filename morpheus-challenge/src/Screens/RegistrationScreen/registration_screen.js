@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {useNavigate} from "react-router-dom";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Modal from "@material-ui/core/Modal";
@@ -6,15 +7,17 @@ import {
     Column,
     ModalBox,
     ModalDescription,
+    ModalTitle,
     FormInput,
     ErrorSpan,
     Container,
     FormBox,
-    FormButton,
+    Button,
     InputTitle
 } from './styles';
 
 function RegistrationScreen() {
+    const navigate = useNavigate();
     const [ openModal, setOpenModal ] = useState(false);
     const [ requestResponse, setRequestResponse ] = useState();
     const formik = useFormik({
@@ -43,17 +46,18 @@ function RegistrationScreen() {
             })
             .then(data => {
                 setRequestResponse(data);
-                handleOpen();
+                handle_open();
             });
         }
     })
 
-    const handleOpen = () => {
+    const handle_open = () => {
         setOpenModal(true);
     };
     
-    const handleClose = () => {
+    const handle_close = () => {
         setOpenModal(false);
+        navigate("/");
     };
 
     function get_modal_description() {
@@ -127,18 +131,19 @@ function RegistrationScreen() {
                         )}
                     </Column>
 
-                    <FormButton type='submit'>CADASTRAR</FormButton>
+                    <Button type='submit' isModalButton={false} >CADASTRAR</Button>
                 </form>
             </FormBox>            
             <Modal
                 open={openModal}
-                onClose={handleClose}
+                onClose={handle_close}
             >
                 <ModalBox>
-                    <h2 id="parent-modal-title">ALERTA</h2>
+                    <ModalTitle id="parent-modal-title">ALERTA</ModalTitle>
                     <ModalDescription id="parent-modal-description">
                         {get_modal_description()}
                     </ModalDescription>
+                    <Button isModalButton={true} id='modal-button' onClick={handle_close}>OK</Button>
                 </ModalBox>
             </Modal>
         </Container>

@@ -20,14 +20,24 @@ export const FormBox = styled.div`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    height: 600px;
-    width: 400px;
+    height: 40rem;
+    width: 25rem;
     background: white;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     display: flex;
     align-items: center;
     justify-content: center;
+
+    @media (max-width: 425px) {
+        height: 38rem;
+        width: 18rem;
+    }
+
+    @media (min-width: 2560px) {
+        height: 47rem;
+        width: 35rem;
+    }
 `;
 
 export const FormInput = styled.input`
@@ -40,11 +50,21 @@ export const FormInput = styled.input`
     &::placeholder {
         color: #76b5c5;
     }
+
+    @media (max-width: 425px) {
+        width: 15rem;
+    }
+
+    @media (min-width: 2560px) {
+        width: 25rem;
+    }
 `;
 
-export const FormButton = styled.button`
+export const Button = styled.button`
     margin: 1rem auto;
+    width: 10rem;
     display: flex;
+    justify-content: center;
     background-color: #405cf5;
     border-radius: 6px;
     border: none;
@@ -53,8 +73,14 @@ export const FormButton = styled.button`
     color: #fff;
     cursor: pointer;
     font-size: 100%;
+    font-weight: bold;
     padding: 1.1rem;
     align-items: center;
+
+    @media (min-width: 2560px) {
+        width: ${props => (props.isModalButton ? '10rem' : '20rem')};
+        font-size: 1.5rem;
+    }
 `;
 
 export const InputTitle = styled.div`
@@ -65,6 +91,15 @@ export const InputTitle = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
+
+    @media (max-width: 425px) {
+        width: 15rem;
+    }
+
+    @media (min-width: 2560px) {
+        width: 25rem;
+        font-size: 2.5rem;
+    }
 `;
 
 
@@ -77,6 +112,15 @@ width: 17.5rem;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
+
+    @media (max-width: 425px) {
+        width: 15rem;
+    }
+
+    @media (min-width: 2560px) {
+        width: 25rem;
+        font-size: 1.25rem;
+    }
 `;
 
 export const ModalBox = styled.div`
@@ -84,7 +128,7 @@ export const ModalBox = styled.div`
     position: fixed;
     top: 50%;
     left: 50%;
-    height: 150px;
+    height: 200px;
     width: 250px;
     transform: translate(-50%, -50%);
     background: white;
@@ -94,10 +138,23 @@ export const ModalBox = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    font-weight: bold;
+    text-align: center;
+
+    @media (min-width: 2560px) {
+        height: 250px;
+        width: 350px;
+        font-size: 1.5rem;
+        padding: 0 10px;
+    }
+`;
+
+export const ModalTitle = styled.h2`
+    color: #405cf5;
+    margin-bottom: 15px;
 `;
 
 export const ModalDescription = styled.span`
     color: black;
-    text-align: center;
     word-wrap:break-word;
 `;
