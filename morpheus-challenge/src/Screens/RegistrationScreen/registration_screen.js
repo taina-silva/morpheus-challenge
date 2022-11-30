@@ -10,7 +10,8 @@ import {
     ErrorSpan,
     Container,
     FormBox,
-    FormButton
+    FormButton,
+    InputTitle
 } from './styles';
 
 function RegistrationScreen() {
@@ -71,13 +72,13 @@ function RegistrationScreen() {
             <FormBox>
                 <form onSubmit={formik.handleSubmit}>
                     <Column>
-                        <label>Email</label>
+                        <InputTitle>Email</InputTitle>
                         <FormInput
                             type="email" name="email" id="email"
-                            placeholder='Email'
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             value={formik.values.email}
+                            showError={formik.touched.email && formik.errors.email}
                         />
                         {formik.touched.email && formik.errors.email && (
                             <ErrorSpan>{formik.errors.email}</ErrorSpan>
@@ -85,13 +86,13 @@ function RegistrationScreen() {
                     </Column>
 
                     <Column>
-                        <label>Nome de usuário</label>
+                        <InputTitle>Nome de usuário</InputTitle>
                         <FormInput
                             type="text" name="username" id="username"
-                            placeholder='Usuário'
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             value={formik.values.username}
+                            showError={formik.touched.username && formik.errors.username}
                         />
                         {formik.touched.username && formik.errors.username && (
                             <ErrorSpan>{formik.errors.username}</ErrorSpan>
@@ -99,13 +100,13 @@ function RegistrationScreen() {
                     </Column>
                     
                     <Column>
-                        <label>Senha</label>
+                        <InputTitle>Senha</InputTitle>
                         <FormInput
                             type="text" name="password" id="password"
-                            placeholder='Senha'
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             value={formik.values.password}
+                            showError={formik.touched.password && formik.errors.password}
                         />
                         {formik.touched.password && formik.errors.password && (
                             <ErrorSpan>{formik.errors.password}</ErrorSpan>
@@ -113,13 +114,13 @@ function RegistrationScreen() {
                     </Column>
                     
                     <Column>
-                        <label>Nome Completo</label>
+                        <InputTitle>Nome Completo</InputTitle>
                         <FormInput
                             type="text" name="fullName" id="fullName"
-                            placeholder='Nome Completo'
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             value={formik.values.fullName}
+                            showError={formik.touched.fullName && formik.errors.fullName}
                         />
                         {formik.touched.fullName && formik.errors.fullName && (
                             <ErrorSpan>{formik.errors.fullName}</ErrorSpan>
@@ -132,8 +133,6 @@ function RegistrationScreen() {
             <Modal
                 open={openModal}
                 onClose={handleClose}
-                aria-labelledby="parent-modal-title"
-                aria-describedby="parent-modal-description"
             >
                 <ModalBox>
                     <h2 id="parent-modal-title">ALERTA</h2>

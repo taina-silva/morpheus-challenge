@@ -1,5 +1,4 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import { Link } from "react-router-dom";
 import SearchBar from "material-ui-search-bar";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -7,6 +6,12 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import {
+    Container,
+    Row,
+    NavLink,
+    StyledSearchBar
+} from './styles';
 
 function ListScreen() {
     const [ originalUsers, setOriginalUsers ] = useState([]);
@@ -44,12 +49,15 @@ function ListScreen() {
     }, [get_all_users]);
 
     return (
-        <div>
-            <SearchBar
-                value={filter}
-                onChange={(filter_value) => requestSearch(filter_value)}
-                onCancelSearch={() => cancelSearch()}
-            />
+        <Container>
+            <Row>
+                <StyledSearchBar
+                    value={filter}
+                    onChange={(filter_value) => requestSearch(filter_value)}
+                    onCancelSearch={() => cancelSearch()}
+                />
+                <NavLink to="/registration">CADASTRAR NOVO USUÁRIO</NavLink>
+            </Row>
             <TableContainer>
             <Table>
                 <TableHead>
@@ -74,8 +82,7 @@ function ListScreen() {
                 </TableBody>
             </Table>
             </TableContainer>
-            <Link to="/registration">CADASTRAR NOVO USUÁRIO</Link>
-        </div>
+        </Container>
     );
 }
 
