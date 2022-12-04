@@ -1,4 +1,5 @@
 const Pool = require('pg').Pool;
+var SqlString = require('sqlstring');
 
 const db_pool = new Pool({
   user: 'postgres',
@@ -10,7 +11,7 @@ const db_pool = new Pool({
 
 const get_all_users = () => {
     return new Promise(function(resolve, reject) {
-        const queryText = `SELECT * FROM morpheus.users`;
+        const queryText = `SELECT email, username, full_name, created_at FROM morpheus.users`;
 
         db_pool.query(queryText, (error, results) => {
         if (error) {
@@ -25,10 +26,10 @@ const get_all_users = () => {
 const add_user = (body) => {
     const { email, username, password, fullName } = body;
     return new Promise(function(resolve, reject) {
-        const query = `INSERT INTO morpheus.users (email, username, password, full_name)
-                        values ($1, $2, $3, $4);`;
+        const insert  = {email: email, username: username, password: password, full_name: fullName};
+        const sql = SqlString.format('INSERT INTO morpheus.users SET ?', insert);
         
-        db_pool.query(query, [email, username, password, fullName], (error, results) => {
+        db_pool.query(sql, (error, results) => {
         if (error) {
           reject(error);
           console.log(error);

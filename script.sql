@@ -16,7 +16,7 @@ CREATE TABLE users (
     "username" text NOT NULL,
     "password" text NOT NULL,
     "full_name" text NOT NULL,
-    "created_at" timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    "created_at" timestamptz DEFAULT (CURRENT_TIMESTAMP - 3) NOT NULL,
     CONSTRAINT "users_email_key" UNIQUE ("email"),
     CONSTRAINT "username" UNIQUE ("username"),
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
@@ -24,24 +24,9 @@ CREATE TABLE users (
 
 ALTER TABLE users OWNER TO postgres;
 
-CREATE OR REPLACE FUNCTION add_user(
-    user_email users.email%TYPE,
-    username users.username%TYPE,
-    user_password users.password%TYPE,
-    user_full_name users.full_name%TYPE
-)
-RETURNS void AS
-$$
-BEGIN
-    insert into users (id, email, username, password, full_name, created_at)
-        values ("user_email", "username", "user_password", "user_full_name");
-END;
-$$ language 'plpgsql';
-
 insert into users (email, username, password, full_name)
-        values ('teste@g.com', 'testee', '123123', 'JOSE');
+        values ('taina@gmail.com', 'tainass', '123123', 'Tainá Silva');
 insert into users (email, username, password, full_name)
-        values ('kk@g.com', 'kk', '123123', 'asd');     
+        values ('morpheus@gmail.com', 'morpheus', '123123', 'morpheus');     
 
--- select add_user('teste@g.com', 'testee', '123123', 'JOSE');
 select * from users;

@@ -55,6 +55,16 @@ function ListScreen() {
         get_all_users();
     }, [get_all_users]);
 
+    function get_created_at_time(created_at) {
+        const date_time = new Date(created_at);
+        return date_time.getDate() + "/" + date_time.getMonth() + "/" + date_time.getFullYear();
+    }
+
+    function get_created_at_date(created_at) {
+        const date_time = new Date(created_at);
+        return date_time.getHours() + ":" + date_time.getMinutes() + ":" + date_time.getSeconds();
+    }
+
     return (
         <Container>
             <Row>
@@ -75,7 +85,6 @@ function ListScreen() {
                             <TableRow>
                                 <TableCell>USUÁRIO</TableCell>
                                 <TableCell align="right">EMAIL</TableCell>
-                                {/* <TableCell align="right">SENHA</TableCell> */}
                                 <TableCell align="right">NOME COMPLETO</TableCell>
                                 <TableCell align="right">CRIADO EM</TableCell>
                             </TableRow>
@@ -85,9 +94,8 @@ function ListScreen() {
                                     <TableRow key={row.id}>
                                         <TableCell component="th" scope="row">{row.username}</TableCell>
                                         <TableCell align="right">{row.email}</TableCell>
-                                        {/* <TableCell align="right">{row.password}</TableCell> */}
                                         <TableCell align="right">{row.full_name}</TableCell>
-                                        <TableCell align="right">{row.created_at.split('T')[0]} às {(row.created_at.split('T')[1]).split('.')[0]}</TableCell>
+                                        <TableCell align="right">{get_created_at_time(row.created_at) + " às " + get_created_at_date(row.created_at)}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
