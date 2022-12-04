@@ -1,5 +1,4 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import SearchBar from "material-ui-search-bar";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
