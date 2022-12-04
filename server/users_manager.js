@@ -10,34 +10,34 @@ const db_pool = new Pool({
 });
 
 const get_all_users = () => {
-    return new Promise(function(resolve, reject) {
-        const queryText = `SELECT email, username, full_name, created_at FROM morpheus.users`;
+  return new Promise(function(resolve, reject) {
+      const queryText = `SELECT email, username, full_name, created_at FROM morpheus.users`;
 
-        db_pool.query(queryText, (error, results) => {
-        if (error) {
-          reject(error)
-        } else {
-          resolve(results.rows);
-        }
-      })
-    }) 
+      db_pool.query(queryText, (error, results) => {
+      if (error) {
+        reject(error)
+      } else {
+        resolve(results.rows);
+      }
+    })
+  }) 
 }
 
 const add_user = (body) => {
-    const { email, username, password, fullName } = body;
-    return new Promise(function(resolve, reject) {
-        const insert  = {email: email, username: username, password: password, full_name: fullName};
-        const sql = SqlString.format('INSERT INTO morpheus.users SET ?', insert);
-        
-        db_pool.query(sql, (error, results) => {
-        if (error) {
-          reject(error);
-          console.log(error);
-        } else {
-          resolve(results.rows);
-        }
-      })
-    }) 
+  const { email, username, password, fullName } = body;
+  return new Promise(function(resolve, reject) {
+    const sql = `INSERT INTO morpheus.users (email, username, password, full_name)
+                  VALUES (${SqlString.escape(email)}, ${SqlString.escape(username)}, ${SqlString.escape(password)}, ${SqlString.escape(fullName)})`
+
+    db_pool.query(sql, (error, results) => {
+      if (error) {
+        reject(error);
+        console.log(error);
+      } else {
+        resolve(results.rows);
+      }
+    })
+  }) 
 }
 
 module.exports = {

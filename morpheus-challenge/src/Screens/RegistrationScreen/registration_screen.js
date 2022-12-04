@@ -63,6 +63,7 @@ function RegistrationScreen() {
     function get_modal_description() {
         if(requestResponse !== undefined ) {
             const res = JSON.parse(requestResponse);
+            if(res.name === 'error') return "Erro ao cadastrar usuário";
             if(res.statusCode === 200) return "Usuário cadastrado com sucesso";
             else if(res.detail.includes("already exists")) {
                 if (res.detail.includes("email")) return "Email já está em uso. Por favor insira outro";
