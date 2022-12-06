@@ -1,11 +1,11 @@
 import React from "react";
-import RegistrationScreen from './Screens/RegistrationScreen/registration_screen';
+import RegistrationScreen from './Screens/RegistrationScreen/registrationScreen';
+import ListScreen from './Screens/ListScreen/listScreen';
 import {
   BrowserRouter as Router,
   Routes,
   Route,
 } from "react-router-dom";
-import ListScreen from './Screens/ListScreen/list_screen';
 
 function App() {
   return (

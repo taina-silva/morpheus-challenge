@@ -16,7 +16,7 @@ CREATE TABLE users (
     "username" text NOT NULL,
     "password" text NOT NULL,
     "full_name" text NOT NULL,
-    "created_at" timestamptz DEFAULT (CURRENT_TIMESTAMP - 3) NOT NULL,
+    "created_at" timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
     CONSTRAINT "users_email_key" UNIQUE ("email"),
     CONSTRAINT "username" UNIQUE ("username"),
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
